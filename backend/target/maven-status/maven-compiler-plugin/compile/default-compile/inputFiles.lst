@@ -1,0 +1,9 @@
+/home/victor/Documentos/git/crud-fx/backend/src/main/java/dev/crudfx/backend/CrudFxApplication.java
+/home/victor/Documentos/git/crud-fx/backend/src/main/java/dev/crudfx/backend/auth/AuthController.java
+/home/victor/Documentos/git/crud-fx/backend/src/main/java/dev/crudfx/backend/auth/DevDataInitializer.java
+/home/victor/Documentos/git/crud-fx/backend/src/main/java/dev/crudfx/backend/auth/SessionAuthFilter.java
+/home/victor/Documentos/git/crud-fx/backend/src/main/java/dev/crudfx/backend/config/WebConfig.java
+/home/victor/Documentos/git/crud-fx/backend/src/main/java/dev/crudfx/backend/piece/Piece.java
+/home/victor/Documentos/git/crud-fx/backend/src/main/java/dev/crudfx/backend/piece/PieceController.java
+/home/victor/Documentos/git/crud-fx/backend/src/main/java/dev/crudfx/backend/piece/PieceRepository.java
+/home/victor/Documentos/git/crud-fx/backend/src/main/java/dev/crudfx/backend/piece/PieceRequest.java

@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: dev.crudfx.backend.piece.PieceRepositoryTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.864 s -- in dev.crudfx.backend.piece.PieceRepositoryTest

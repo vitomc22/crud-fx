@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: crud-fx-backend
+  profiles:
+    default: dev
+  datasource:
+    url: jdbc:sqlite:${CRUD_FX_DB:./data/crud-fx.db}
+    driver-class-name: org.sqlite.JDBC
+  sql:
+    init:
+      mode: always
+server:
+  port: ${CRUD_FX_PORT:8080}
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        same-site: lax
+logging:
+  level:
+    org.springframework.jdbc.core: warn

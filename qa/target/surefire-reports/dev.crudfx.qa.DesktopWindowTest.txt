@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: dev.crudfx.qa.DesktopWindowTest
+-------------------------------------------------------------------------------
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 35.65 s -- in dev.crudfx.qa.DesktopWindowTest

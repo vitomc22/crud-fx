@@ -1,0 +1,12 @@
+dev/crudfx/backend/piece/PieceRequest.class
+dev/crudfx/backend/auth/SessionAuthFilter.class
+dev/crudfx/backend/auth/AuthController.class
+dev/crudfx/backend/auth/AuthController$StoredUser.class
+dev/crudfx/backend/auth/AuthController$UserSession.class
+dev/crudfx/backend/piece/Piece.class
+dev/crudfx/backend/config/WebConfig.class
+dev/crudfx/backend/piece/PieceRepository.class
+dev/crudfx/backend/piece/PieceController.class
+dev/crudfx/backend/auth/AuthController$LoginRequest.class
+dev/crudfx/backend/CrudFxApplication.class
+dev/crudfx/backend/auth/DevDataInitializer.class

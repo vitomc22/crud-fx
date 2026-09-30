@@ -1,0 +1,94 @@
+.app-root {
+    -fx-background-color: #eef3f2;
+    -fx-font-family: "Noto Sans", sans-serif;
+    -fx-text-fill: #182c32;
+}
+
+.login-panel,
+.editor-panel,
+.table-panel {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8;
+    -fx-border-color: #d5e0df;
+    -fx-border-radius: 8;
+    -fx-padding: 22;
+}
+
+.login-panel {
+    -fx-max-width: 440;
+}
+
+.page-header {
+    -fx-background-color: #152b31;
+    -fx-padding: 18 26 18 26;
+    -fx-spacing: 18;
+    -fx-alignment: center-left;
+}
+
+.page-title {
+    -fx-font-size: 23px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+}
+
+.section-title {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #182c32;
+}
+
+.muted-text {
+    -fx-text-fill: #617579;
+}
+
+.text-field,
+.password-field,
+.text-area {
+    -fx-background-color: #f7f9f8;
+    -fx-border-color: #cbd8d6;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 9;
+}
+
+.button {
+    -fx-background-color: #087f75;
+    -fx-background-radius: 4;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 9 14;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #06665f;
+}
+
+.button.secondary {
+    -fx-background-color: #dce8e6;
+    -fx-text-fill: #17383a;
+}
+
+.button.danger {
+    -fx-background-color: #a63d40;
+}
+
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: #d5e0df;
+    -fx-border-radius: 4;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #e8f0ef;
+}
+
+.status-bar {
+    -fx-background-color: #e1eae8;
+    -fx-padding: 10 20;
+    -fx-text-fill: #315157;
+}
+
+.status-error {
+    -fx-text-fill: #a12e32;
+}
