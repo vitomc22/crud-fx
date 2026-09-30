@@ -1,0 +1,143 @@
+:root {
+  font-family: "Noto Sans", "Segoe UI", sans-serif;
+  color: #182c32;
+  background: #eef3f2;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --ink: #182c32;
+  --muted: #617579;
+  --line: #d5e0df;
+  --paper: #ffffff;
+  --wash: #f7f9f8;
+  --teal: #087f75;
+  --teal-dark: #06665f;
+  --red: #a63d40;
+  --radius: 6px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background: #eef3f2;
+}
+
+button, input, textarea { font: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: wait; opacity: 0.65; }
+
+.app-shell { display: flex; min-height: 100vh; flex-direction: column; }
+
+.topbar {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 14px 26px;
+  color: white;
+  background: #152b31;
+}
+
+.brand-lockup { margin-bottom: 24px; color: var(--ink); font-size: 23px; font-weight: 700; }
+.topbar h1 { margin: 0; color: white; font-size: 23px; line-height: 1.2; }
+.topbar-account { display: flex; align-items: center; gap: 18px; }
+.account-email { color: #d4e1df; font-size: 13px; }
+
+h2, p { margin-top: 0; }
+h2 { margin: 0; color: var(--ink); font-size: 17px; line-height: 1.35; }
+
+.main-content { display: flex; flex: 1; min-height: 0; padding: 18px; }
+.inventory-layout { display: grid; flex: 1; min-height: 0; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; }
+.table-panel, .editor-panel { min-width: 0; padding: 22px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); }
+.table-panel { display: flex; flex-direction: column; min-height: 0; }
+.panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 17px; }
+.editor-heading { align-items: start; margin-bottom: 18px; }
+
+.search-field { display: block; margin-bottom: 14px; }
+.search-field input { width: 100%; min-width: 0; min-height: 38px; padding: 8px 9px; border: 1px solid #cbd8d6; border-radius: 4px; outline: 0; color: var(--ink); background: var(--wash); font-size: 13px; }
+.search-field input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgb(8 127 117 / 12%); }
+.search-field input::placeholder, input::placeholder, textarea::placeholder { color: #829394; }
+
+.table-scroll { flex: 1; min-height: 0; overflow: auto; }
+table { width: 100%; border-collapse: collapse; text-align: left; }
+thead { background: #e8f0ef; }
+th { height: 39px; padding: 0 12px; color: #526b6f; font-size: 11px; font-weight: 700; }
+td { height: 48px; padding: 7px 12px; border-bottom: 1px solid #e8eeed; color: #344c50; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover { background: #f7faf9; }
+.table-link { padding: 3px 0; border: 0; color: #08766e; background: transparent; font-size: 13px; font-weight: 700; text-align: left; }
+.table-link:hover { color: #064f4a; text-decoration: underline; }
+.revision-badge { display: inline-flex; min-width: 28px; justify-content: center; padding: 4px 7px; border-radius: 4px; color: #315157; background: #e8f0ef; font-size: 11px; font-weight: 700; }
+.table-loading { padding: 12px; color: var(--muted); font-size: 12px; }
+
+.piece-form { display: grid; gap: 9px; }
+.form-field { display: grid; gap: 6px; }
+.form-field label { color: #344d51; font-size: 12px; font-weight: 650; }
+.form-field input, .form-field textarea, .login-form input {
+  width: 100%;
+  min-height: 41px;
+  padding: 9px 10px;
+  border: 1px solid #cbd8d6;
+  border-radius: 4px;
+  outline: 0;
+  color: var(--ink);
+  background: var(--wash);
+  font-size: 13px;
+}
+.form-field input:focus, .form-field textarea:focus, .login-form input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgb(8 127 117 / 12%); }
+.form-field input[readonly] { color: #64777a; background: #edf1f0; }
+.form-field textarea { min-height: 98px; resize: vertical; }
+.primary-button, .secondary-button, .quiet-button, .danger-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+.primary-button { min-height: 37px; padding: 0 14px; color: white; background: var(--teal); }
+.primary-button:hover:not(:disabled) { background: var(--teal-dark); }
+.secondary-button { min-height: 37px; padding: 0 14px; color: #17383a; background: #dce8e6; }
+.secondary-button:hover:not(:disabled) { background: #c8d9d6; }
+.quiet-button { min-height: 36px; padding: 0 14px; color: #17383a; background: #dce8e6; }
+.quiet-button:hover { background: #c8d9d6; }
+.danger-button { min-height: 37px; padding: 0 14px; color: white; background: var(--red); }
+.danger-button:hover:not(:disabled) { background: #873235; }
+.save-button, .danger-button { width: 100%; }
+
+.status-notice { display: flex; min-height: 40px; align-items: center; margin: 0; padding: 8px 20px; color: #315157; background: #e1eae8; font-size: 13px; }
+.status-info { color: #526c70; }
+.status-success { color: #08766e; }
+.status-error { color: #a12e32; }
+
+.login-shell { display: grid; min-height: 100vh; grid-template-rows: 1fr auto; background: #eef3f2; }
+.login-panel { width: min(100% - 36px, 440px); align-self: center; justify-self: center; padding: 28px; border: 1px solid var(--line); border-radius: 8px; background: white; }
+.login-panel h1 { margin: 0 0 8px; color: var(--ink); font-size: 23px; line-height: 1.2; }
+.login-copy { margin-bottom: 18px; color: var(--muted); font-size: 13px; }
+.section-rule { height: 1px; margin-bottom: 20px; background: #e1e9e8; }
+.login-form { display: grid; gap: 9px; }
+.login-form label { margin-top: 2px; color: #344d51; font-size: 12px; font-weight: 650; }
+.login-button { width: 100%; margin-top: 8px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; clip-path: inset(50%); }
+
+@media (max-width: 800px) {
+  .inventory-layout { grid-template-columns: minmax(0, 1fr); }
+  .table-panel { min-height: 360px; }
+}
+
+@media (max-width: 520px) {
+  .topbar { min-height: 60px; gap: 10px; padding: 12px 15px; }
+  .topbar h1 { font-size: 18px; }
+  .topbar-account { gap: 8px; }
+  .account-email { max-width: 145px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .main-content { padding: 14px; }
+  .inventory-layout { gap: 14px; }
+  .table-panel, .editor-panel { padding: 16px; }
+  .login-panel { padding: 24px 20px; }
+  th, td { padding-right: 8px; padding-left: 8px; }
+}

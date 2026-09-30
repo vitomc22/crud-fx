@@ -28,7 +28,7 @@ public class PieceController {
     }
 
     @GetMapping("/{partNumber}")
-    public ResponseEntity<Piece> findOne(@PathVariable String partNumber) {
+    public ResponseEntity<Piece> findOne(@PathVariable("partNumber") String partNumber) {
         return repository.findByPartNumber(partNumber)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -46,7 +46,7 @@ public class PieceController {
 
     @PutMapping("/{partNumber}")
     public ResponseEntity<Piece> update(
-            @PathVariable String partNumber,
+            @PathVariable("partNumber") String partNumber,
             @Valid @RequestBody PieceRequest request) {
         if (!partNumber.equals(request.partNumber())) {
             return ResponseEntity.badRequest().build();
@@ -60,7 +60,7 @@ public class PieceController {
     }
 
     @DeleteMapping("/{partNumber}")
-    public ResponseEntity<Void> delete(@PathVariable String partNumber) {
+    public ResponseEntity<Void> delete(@PathVariable("partNumber") String partNumber) {
         return repository.deleteByPartNumber(partNumber)
                 ? ResponseEntity.noContent().build()
                 : ResponseEntity.notFound().build();

@@ -1,6 +1,6 @@
 # CRUD FX | Laboratório de QA
 
-> Um pequeno inventário de peças usado como laboratório para praticar QA em uma aplicação Java ponta a ponta: API REST, persistência, autenticação por sessão, interface JavaFX e testes automatizados com JUnit e TestFX.
+> Um pequeno inventário de peças usado como laboratório para praticar QA em uma aplicação ponta a ponta: API REST, persistência, autenticação por sessão, interfaces JavaFX e React e testes automatizados com JUnit, TestFX e Playwright Java.
 
 ![Java 25](https://img.shields.io/badge/Java-25-orange)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.5-6DB33F)
@@ -14,6 +14,8 @@ O projeto oferece uma aplicação de desktop simples, mas real o bastante para e
 
 - **Testes de unidade/integração do backend** para repositório, autenticação e API.
 - **Testes de interface com TestFX** para operar a janela JavaFX como uma pessoa usuária.
+- **Interface web em React** com o mesmo fluxo visual e funcional do cliente JavaFX.
+- **Testes E2E com Playwright Java** atravessando navegador, frontend, API e sessão HTTP.
 - **Exploração manual** de login, busca e operações CRUD.
 - **Prática de automação**: seletores estáveis, dados de teste, asserts, relatórios e análise de falhas.
 
@@ -24,7 +26,9 @@ O projeto oferece uma aplicação de desktop simples, mas real o bastante para e
 ```mermaid
 flowchart LR
     QA[TestFX + JUnit] --> UI[Desktop JavaFX]
+  WebQA[Playwright Java] --> Web[React + Vite]
     UI -->|HTTP + cookie de sessão| API[Spring Boot REST API]
+  Web -->|HTTP + cookie de sessão| API
     API --> Repo[JdbcTemplate / PieceRepository]
     Repo --> DB[(SQLite)]
     BackendTests[JUnit + Spring Test] --> API
@@ -48,16 +52,20 @@ As imagens abaixo mostram a tela de entrada e o inventário após autenticação
 |---|---|---|
 | `backend` | API REST, autenticação, validação e acesso a dados | Spring Boot, Spring JDBC, SQLite, JUnit |
 | `desktop` | Aplicação desktop e cliente HTTP com cookie de sessão | JavaFX, `java.net.http.HttpClient`, Jackson |
-| `qa` | Cenários automatizados de interface | JUnit 5, TestFX |
+| `web` | Interface web responsiva para o inventário | React, TypeScript, Vite |
+| `qa` | Cenários automatizados da interface JavaFX | JUnit 5, TestFX |
+| `web-qa` | Cenários E2E da interface web | JUnit 5, Playwright Java, Failsafe |
 
-O projeto é um **Maven reactor**. O POM da raiz agrega os três módulos e centraliza as versões.
+O projeto é um **Maven reactor**. O POM da raiz agrega os módulos Java e centraliza as versões; o frontend React mantém seu próprio `package.json` e ciclo de build com npm.
 
 ## Requisitos
 
 - JDK **25** (o projeto compila com `maven.compiler.release=25`).
 - Apache Maven **3.9+**.
+- Node.js e npm para executar e compilar a interface React.
 - Ambiente gráfico para abrir o cliente JavaFX e executar TestFX.
 - No Linux, uma sessão gráfica acessível (`DISPLAY`/Wayland). Em CI sem desktop, configure uma tela virtual, por exemplo Xvfb, e valide a configuração do TestFX para esse ambiente.
+- Chromium e dependências do Playwright para executar os testes web.
 
 Confira as ferramentas:
 
@@ -106,6 +114,15 @@ Em outro terminal, também na raiz, inicie a janela:
 ```bash
 mvn -pl desktop javafx:run
 ```
+
+Para abrir a interface web, mantenha a API em execução e use um terceiro terminal:
+
+```bash
+npm --prefix web install
+npm --prefix web run dev
+```
+
+A interface web fica disponível em `http://localhost:5173/`. Por padrão, ela usa a API em `http://localhost:8080`; para apontar para outra URL, defina `VITE_API_BASE_URL` antes do build ou do servidor de desenvolvimento.
 
 A API usa `http://localhost:8080` por padrão. Para evitar criar o banco no repositório, é possível apontar para um arquivo temporário:
 
@@ -174,6 +191,39 @@ Os testes atuais incluem:
 - `PieceRepositoryTest`: salva, atualiza, consulta e exclui registros usando SQLite de teste.
 - `AuthControllerTest`: valida login, sessão autorizada e rejeição de credenciais inválidas.
 
+### Suíte web com Playwright Java
+
+Os cenários E2E estão em `web-qa/src/test/java/dev/crudfx/webqa/PieceInventoryIT.java`. Eles usam o frontend e a API reais, portanto os dois serviços precisam estar em execução antes do Maven:
+
+```bash
+# Terminal 1
+CRUD_FX_DB=/tmp/crud-fx-web-e2e.db mvn -pl backend spring-boot:run
+
+# Terminal 2
+npm --prefix web run dev
+
+# Terminal 3
+mvn -pl web-qa -Pweb-e2e verify
+```
+
+A suíte cobre login válido e inválido, filtro por código/nome/revisão, obrigatoriedade dos campos, criação, edição, exclusão e logout com invalidação da sessão. Os dados criados usam códigos únicos e são removidos ao final de cada cenário.
+
+Para instalar os navegadores do Playwright quando necessário:
+
+```bash
+mvn -pl web-qa exec:java \
+  -Dexec.mainClass=com.microsoft.playwright.CLI \
+  -Dexec.args="install chromium"
+```
+
+Os relatórios são gravados em `web-qa/target/failsafe-reports/`. Capturas documentais podem ser geradas sem sobrescrever as imagens do repositório:
+
+```bash
+mvn -pl web-qa -Pweb-e2e \
+  -Dcapture.documentation.screenshots=true \
+  -Dscreenshot.output.dir=/tmp/crud-fx-web-e2e verify
+```
+
 ## Relatórios
 
 O Surefire gera resultados de teste em texto e XML. Para executar TestFX e criar o relatório HTML:
@@ -191,6 +241,7 @@ Arquivos gerados:
 | HTML | `qa/target/reports/surefire.html` |
 
 Os testes do backend escrevem seus próprios TXT/XML em `backend/target/surefire-reports/`.
+Os testes Playwright escrevem seus relatórios em `web-qa/target/failsafe-reports/`.
 
 O botão **Play** do Test Runner no VS Code mostra o resultado no painel **Testing**, mas não executa o goal do Maven nem cria os relatórios Surefire. Use o comando Maven acima quando precisar dos arquivos.
 
@@ -248,7 +299,7 @@ curl -i -b /tmp/crud-fx-cookies.txt \
 
 ## Roteiro de exploração manual
 
-1. Inicie backend e desktop nos dois terminais.
+1. Inicie o backend e escolha a interface JavaFX ou web.
 2. Tente entrar com senha incorreta e confira a mensagem de erro.
 3. Entre com a conta demo e filtre por código, nome e revisão.
 4. Crie uma peça válida e confira a tabela.
@@ -283,8 +334,13 @@ Ao reportar um defeito, inclua os passos para reproduzir, o resultado esperado, 
 │   └── src/test/java/  # testes de API/autenticação e repositório
 ├── desktop/
 │   └── src/main/       # aplicação JavaFX, tela, gateway HTTP e CSS
+├── web/
+│   ├── src/             # interface React, cliente API e estilos
+│   └── package.json     # scripts npm do frontend
 ├── qa/
 │   └── src/test/java/  # testes de UI com JUnit + TestFX
+├── web-qa/
+│   └── src/test/java/  # testes E2E com JUnit + Playwright Java
 └── pom.xml             # reactor Maven e versões compartilhadas
 ```
 
@@ -294,8 +350,12 @@ Ao reportar um defeito, inclua os passos para reproduzir, o resultado esperado, 
 - Maven
 - Spring Boot 3.5.5
 - JavaFX 25.0.2
+- React 19
+- TypeScript 5.8
+- Vite 6
 - JUnit 5.12.2
 - TestFX 4.0.18
+- Playwright Java 1.52.0
 - SQLite JDBC 3.50.2.0
 - Jackson para JSON
 
@@ -305,6 +365,7 @@ Ao reportar um defeito, inclua os passos para reproduzir, o resultado esperado, 
 - Adicionar testes de contrato para status HTTP e validação de payload.
 - Criar testes de integração do fluxo JavaFX → HTTP → SQLite.
 - Verificar expiração/logout da sessão e respostas `401` na UI.
+- Adicionar checks de acessibilidade e responsividade à suíte Playwright.
 - Adicionar cobertura com JaCoCo e definir um limite mínimo por módulo.
 - Automatizar o roteiro manual em CI com display virtual para TestFX.
 
@@ -334,3 +395,14 @@ TestFX precisa de um ambiente gráfico. Em CI, use Xvfb ou executor com display 
 ### O Maven imprime avisos sobre `Unsafe` ou acesso nativo
 
 Avisos de bibliotecas internas do Maven/JavaFX não significam, por si só, que os testes falharam. Verifique o código de saída do processo e os resultados do Surefire: `Failures`, `Errors` e `Skipped`.
+
+### O Playwright não consegue acessar `localhost:5173`
+
+O teste web não inicia o Vite automaticamente. Mantenha estes dois processos ativos em terminais separados antes de executar o perfil `web-e2e`:
+
+```bash
+mvn -pl backend spring-boot:run
+npm --prefix web run dev
+```
+
+`ERR_CONNECTION_REFUSED` em `http://localhost:5173/` indica que o servidor Vite não está disponível. O mesmo princípio vale para erros de conexão com a API em `http://localhost:8080`.
